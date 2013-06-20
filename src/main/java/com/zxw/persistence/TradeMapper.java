@@ -1,5 +1,9 @@
 package com.zxw.persistence;
 
+import com.zxw.model.Market;
+import com.zxw.model.User;
+
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,4 +20,12 @@ public interface TradeMapper {
     public void setProperty(Map<String, String> map);
 
     public void updateProperty(Map<String, String> map);
+
+    public void addMarket(Market market);
+
+    public void updateMarket(Market market);
+
+    public List<Market> findAllMarkets();
+
+    public User findUserByName(String username);
 }

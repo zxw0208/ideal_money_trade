@@ -1,5 +1,7 @@
 package com.zxw.servlet;
 
+import com.zxw.service.CryptsyService;
+import com.zxw.service.impl.CryptsyServiceImpl;
 import com.zxw.utils.RuntimeProperties;
 import com.zxw.utils.SpringContext;
 import org.springframework.web.context.WebApplicationContext;
@@ -18,8 +20,8 @@ public class StartupServlet extends DispatcherServlet {
         WebApplicationContext ac = super.initWebApplicationContext();
         SpringContext.setApplicationContext(ac);
 
-        RuntimeProperties.setProperty(RuntimeProperties.LOGIN_PAGE_NUM, "5");
-        RuntimeProperties.setProperty(RuntimeProperties.PROCESS_PAGE_NUM, "3");
+        CryptsyService cs = ac.getBean(CryptsyServiceImpl.class);
+        cs.updateMarket();
         return ac;
     }
 

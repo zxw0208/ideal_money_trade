@@ -7,7 +7,7 @@ package com.zxw.exception;
  * Time: 下午2:59
  * To change this template use File | Settings | File Templates.
  */
-public class CryptsyApiException extends RuntimeException {
+public class CryptsyApiException extends Exception {
 
     public CryptsyApiException() {
         super();
