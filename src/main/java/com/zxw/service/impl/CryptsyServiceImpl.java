@@ -29,7 +29,7 @@ public class CryptsyServiceImpl implements CryptsyService {
 
     @Override
     public void updateMarket() {
-        User user = UserHolder.getUser();
+        /*User user = UserHolder.getUser();
         if(user == null){
             user = tradeMapper.findUserByName("zxw");
         }
@@ -45,6 +45,6 @@ public class CryptsyServiceImpl implements CryptsyService {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 }

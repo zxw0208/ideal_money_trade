@@ -4,8 +4,16 @@ import com.zxw.service.CryptsyService;
 import com.zxw.service.impl.CryptsyServiceImpl;
 import com.zxw.utils.RuntimeProperties;
 import com.zxw.utils.SpringContext;
+import org.apache.commons.net.telnet.TelnetClient;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.log4j.Logger;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
+
+import java.io.IOException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,12 +24,65 @@ import org.springframework.web.servlet.DispatcherServlet;
  */
 public class StartupServlet extends DispatcherServlet {
 
+    Logger logger = Logger.getLogger(this.getClass());
+
     protected WebApplicationContext initWebApplicationContext() {
         WebApplicationContext ac = super.initWebApplicationContext();
         SpringContext.setApplicationContext(ac);
 
-        CryptsyService cs = ac.getBean(CryptsyServiceImpl.class);
-        cs.updateMarket();
+        /*CryptsyService cs = ac.getBean(CryptsyServiceImpl.class);
+        cs.updateMarket();*/
+
+        final HttpClient httpClient = new DefaultHttpClient();
+        final HttpGet post = new HttpGet("http://ip138.com/");
+
+        try {
+            Runtime.getRuntime().exec("cmd.exe /c taskkill /F /IM PhDDNS.exe");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        while(true){
+            HttpResponse resp = null;
+            try {
+                resp = httpClient.execute(post);
+                int status = resp.getStatusLine().getStatusCode();
+                if(status == 200){
+                    logger.info("已联网。。。");
+                    Process child = Runtime.getRuntime().exec("cmd.exe /c " + RuntimeProperties.getProperty("_HSK_LOCATION"));
+                    Thread.sleep(30000);
+                    try{
+                        TelnetClient telnet = new TelnetClient();
+                        telnet.connect("zxw02081.vicp.cc", 10082);
+                        logger.info("花生壳打开成功。。。。");
+                    }catch(java.net.ConnectException ex){
+                        ex.printStackTrace();
+                        Runtime.getRuntime().exec("cmd.exe /c taskkill /F /IM PhDDNS.exe");
+                        logger.info("花生壳未连接成功。。。。");
+                        throw new Exception(ex);
+                    }
+
+                    //child.destroy();
+                    break;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }finally {
+                try {
+                    if(resp != null){
+                        resp.getEntity().getContent().close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
         return ac;
     }
 

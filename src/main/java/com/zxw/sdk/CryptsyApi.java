@@ -103,7 +103,12 @@ public class CryptsyApi {
     }
 
     private String post(List<NameValuePair> formParams, String key, String secret) throws CryptsyApiException {
-        final HttpClient httpClient = new DefaultHttpClient();
+        HttpClient httpClient = null;
+        try {
+            httpClient = new NoSSLClient();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         final HttpPost post = new HttpPost("https://www.cryptsy.com/api");
 
         String query = URLEncodedUtils.format(formParams, Charset.forName("UTF-8"));

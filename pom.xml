@@ -7,6 +7,11 @@
     <version>1.0-SNAPSHOT</version>
     <name>IdealMoneyTrade</name>
     <url>http://maven.apache.org</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -157,6 +162,11 @@
             <version>2.4</version>
         </dependency>
         <dependency>
+            <artifactId>commons-net</artifactId>
+            <groupId>commons-net</groupId>
+            <version>3.2</version>
+        </dependency>
+        <dependency>
             <groupId>net.sourceforge.htmlunit</groupId>
             <artifactId>htmlunit-core-js</artifactId>
             <version>2.12</version>
@@ -188,6 +198,18 @@
         </dependency>
     </dependencies>
     <build>
-        <finalName>Taobao</finalName>
+        <finalName>ideal_money_trade</finalName>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.0</version>
+                <configuration>
+                    <target>1.7</target>
+                    <source>1.7</source>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>
