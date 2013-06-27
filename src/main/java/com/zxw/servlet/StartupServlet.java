@@ -33,6 +33,18 @@ public class StartupServlet extends DispatcherServlet {
         /*CryptsyService cs = ac.getBean(CryptsyServiceImpl.class);
         cs.updateMarket();*/
 
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                already();
+            }
+        });
+        thread.start();
+
+        return ac;
+    }
+
+    public void already(){
         final HttpClient httpClient = new DefaultHttpClient();
         final HttpGet post = new HttpGet("http://ip138.com/");
 
@@ -52,10 +64,9 @@ public class StartupServlet extends DispatcherServlet {
                     Process child = Runtime.getRuntime().exec("cmd.exe /c " + RuntimeProperties.getProperty("_HSK_LOCATION"));
                     Thread.sleep(30000);
                     try{
-                        TelnetClient telnet = new TelnetClient();
-                        telnet.connect("zxw02081.vicp.cc", 10082);
+                        isOpenHsk();
                         logger.info("花生壳打开成功。。。。");
-                    }catch(java.net.ConnectException ex){
+                    }catch(IOException ex){
                         ex.printStackTrace();
                         Runtime.getRuntime().exec("cmd.exe /c taskkill /F /IM PhDDNS.exe");
                         logger.info("花生壳未连接成功。。。。");
@@ -82,8 +93,18 @@ public class StartupServlet extends DispatcherServlet {
                 e.printStackTrace();
             }
         }
+    }
 
-        return ac;
+    public void isOpenHsk() throws IOException {
+        final HttpClient httpClient = new DefaultHttpClient();
+        final HttpGet post = new HttpGet("http://zxw02081.vicp.cc:10082/trade");
+        HttpResponse resp = httpClient.execute(post);
+        int status = resp.getStatusLine().getStatusCode();
+        if(status == 200){
+            System.out.println("...");
+        }else{
+            System.out.println(status);
+        }
     }
 
 }

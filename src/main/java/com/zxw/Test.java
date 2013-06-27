@@ -4,6 +4,11 @@ import com.zxw.exception.CryptsyApiException;
 import com.zxw.model.User;
 import com.zxw.sdk.CryptsyApi;
 import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.net.telnet.TelnetClient;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -21,14 +26,24 @@ public class Test {
 
     public static void main(String [] args) throws IOException, ParseException, CryptsyApiException {
 
-        String key = "916f13117227c5fea82950874b824d7af5990c54";
+        /*String key = "916f13117227c5fea82950874b824d7af5990c54";
         String secret = "6bd6079674a664d02e3beec80f89d240b5f8bce4464b260a6f6fe91096a72e0d1abc0e1c07beee63";
 
         CryptsyApi ca = new CryptsyApi();
         User user = new User();
         user.setKey(key);
         user.setSecret(secret);
-        ca.getMarkets(user);
+        ca.getMarkets(user);*/
+        final HttpClient httpClient = new DefaultHttpClient();
+        final HttpGet post = new HttpGet("http://zxw02081.vicp.cc:10082/trade");
+        HttpResponse resp = null;
+        resp = httpClient.execute(post);
+        int status = resp.getStatusLine().getStatusCode();
+        if(status == 200){
+            System.out.println("...");
+        }else{
+            System.out.println(status);
+        }
 
     }
 
